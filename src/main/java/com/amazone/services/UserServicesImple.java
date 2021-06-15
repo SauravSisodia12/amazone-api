@@ -1,5 +1,6 @@
 package com.amazone.services;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,9 @@ public class UserServicesImple implements UserServices {
 
 	@Override
 	public List<Product> viewAllProducts() {
-		return productDao.findAll(); 
+		List<Product> productList = productDao.findAll();
+		Collections.shuffle(productList);
+		return productList;
 	}
 
 	@Override
@@ -71,6 +74,7 @@ public class UserServicesImple implements UserServices {
 		List<Product> productList = productDao.findByCategory(category);
 		if(productList.isEmpty())
 			throw new CategoryNotFoundException("Category Not Found");
+		Collections.shuffle(productList);
 		return productList;
 	}
 
@@ -87,6 +91,7 @@ public class UserServicesImple implements UserServices {
 		List<Product> productList =  productDao.findByBrand(brand);
 		if(productList.isEmpty())
 			throw new BrandNotFoundException("Brand Not Found");
+		Collections.shuffle(productList);
 		return productList;
 	}
 
@@ -96,7 +101,14 @@ public class UserServicesImple implements UserServices {
 		List<Product> productList = productDao.findByCategoryOrNameOrBrand("%"+choice+"%");
 		if(productList.isEmpty())
 			throw new CategoryNotFoundException("Category Not Found");
+		Collections.shuffle(productList);
 		return productList;
+	}
+
+	@Override
+	public User getUserById(String userid) throws UserNotFoundException {
+		User user = userDAO.findUserByUserId(userid);
+		return user;
 	}
 	
 }

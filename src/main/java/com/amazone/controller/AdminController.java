@@ -45,6 +45,7 @@ public class AdminController {
 			@ApiResponse(code = 401, message= "Message Not Found")
 	})
 	ResponseEntity<Boolean> validateAdmin(@PathVariable("username")String username, @PathVariable("password")String password) throws UserNotFoundException {
+		System.out.println(username+"-"+password);
 		boolean checkDetails = adminService.validateAdmin(username, password);
 		return ResponseEntity.ok(checkDetails);
 	}
@@ -96,7 +97,7 @@ public class AdminController {
 	}
 	
 	@GetMapping("/products-randomly")
-	@ApiOperation(value = "Show 5 Products Randomly Operation", response = String.class)
+	@ApiOperation(value = "Show 10 Products Randomly Operation", response = String.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message= "Success"),
 			@ApiResponse(code = 401, message= "Message Not Found")

@@ -14,6 +14,7 @@ public interface UserServices {
 
 	public boolean validateUser(String userName,String password) throws UserNotFoundException;
 	public void registerUser(User userdetails) throws UserAlreadyExistException;
+	public User getUserById(String userid) throws UserNotFoundException;
 	public int addMoney(int amount,String userid);
 	public int checkBalance(String userid);
 	public int updateWalletBalance(String userid,int amount);

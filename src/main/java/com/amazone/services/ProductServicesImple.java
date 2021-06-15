@@ -59,7 +59,7 @@ public class ProductServicesImple implements ProductServices {
 	public List<Product> viewRandomlyTenProducts() {
 		List<Product> productList = productdao.findAll();
 		Collections.shuffle(productList);
-		return productList;
+		return productList.subList(0, 10);
 	}
 	
 }

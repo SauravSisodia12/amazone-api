@@ -30,6 +30,11 @@ public class CartServiceImpl implements CartService {
 	public List<Cart> allCartItems() {
 		return cartDao.findAll();
 	}
+
+	@Override
+	public int cartTotal() {
+		return cartDao.sumCartAmount();
+	}
 	
 
 }

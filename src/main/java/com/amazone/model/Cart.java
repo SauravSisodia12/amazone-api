@@ -24,4 +24,6 @@ public class Cart {
 	String brand;
 	String category;
 	Double price;
+	String description;
+	String image;
 }
