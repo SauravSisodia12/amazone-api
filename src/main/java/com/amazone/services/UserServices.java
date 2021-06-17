@@ -17,12 +17,13 @@ public interface UserServices {
 	public User getUserById(String userid) throws UserNotFoundException;
 	public int addMoney(int amount,String userid);
 	public int checkBalance(String userid);
-	public int updateWalletBalance(String userid,int amount);
+	public void updateWalletBalance(User user);
 	public int generateBill(int...ProdIds);
 	
 	List<Product> viewAllProducts();
+	List<Product> sortProducts(String choice);
 	List<Product> viewProductByCategory(String category) throws CategoryNotFoundException;
-	List<Product> ViewProductByPrice(int choice) throws ProductNotFoundException;
+	List<Product> ViewProductByPrice(String choice) throws ProductNotFoundException;
 	List<Product> ViewProductByBrand(String brand) throws BrandNotFoundException;
 	List<Product> ViewProductByNameOrBrandOrCategory(String choice) throws CategoryNotFoundException;
 }

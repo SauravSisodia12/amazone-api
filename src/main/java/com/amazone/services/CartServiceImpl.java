@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.amazone.exception.IdNotFoundException;
 import com.amazone.model.Cart;
-import com.amazone.repository.CartDAO;
+import com.amazone.repository.CartRepository;
 
 @Service
 public class CartServiceImpl implements CartService {
 
 	@Autowired
-	CartDAO cartDao;
+	CartRepository cartDao;
 
 	@Override
 	public void addProductToCart(Cart cartItem) {
@@ -34,6 +34,11 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public int cartTotal() {
 		return cartDao.sumCartAmount();
+	}
+
+	@Override
+	public void deleteAll() {
+		cartDao.deleteAll();
 	}
 	
 

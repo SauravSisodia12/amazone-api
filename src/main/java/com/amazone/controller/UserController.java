@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amazone.exception.BrandNotFoundException;
 import com.amazone.exception.CategoryNotFoundException;
 import com.amazone.exception.IdNotFoundException;
+import com.amazone.exception.ProductNotFoundException;
 import com.amazone.exception.UserAlreadyExistException;
 import com.amazone.exception.UserNotFoundException;
 import com.amazone.model.Cart;
@@ -99,9 +101,33 @@ public class UserController {
 			@ApiResponse(code = 200, message= "Success"),
 			@ApiResponse(code = 401, message= "Message Not Found")
 	})
-	ResponseEntity<Product> findBookById(@PathVariable("productid")int productid) throws IdNotFoundException {
+	ResponseEntity<Product> findProductById(@PathVariable("productid")int productid) throws IdNotFoundException {
 		Product product = productServices.viewProductById(productid);
 		return ResponseEntity.ok(product);
+	}
+	
+	@GetMapping("/products-by-price/{price}")
+	@ApiOperation(value = "Get Products By Price Operation", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message= "Success"),
+			@ApiResponse(code = 401, message= "Message Not Found")
+	})
+	ResponseEntity<List<Product>> findProductByPrice(@PathVariable("price")String price) throws ProductNotFoundException {
+		System.out.println(price);
+		List<Product> productList =  userServices.ViewProductByPrice(price);
+		return ResponseEntity.ok(productList);
+	}
+	
+	@GetMapping("/sort-products/{choice}")
+	@ApiOperation(value = "Get Products By Price Operation", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message= "Success"),
+			@ApiResponse(code = 401, message= "Message Not Found")
+	})
+	ResponseEntity<List<Product>> sortProductByPrice(@PathVariable("choice")String choice){
+		System.out.println(choice);
+		List<Product> productList =  userServices.sortProducts(choice);
+		return ResponseEntity.ok(productList);
 	}
 	
 	@GetMapping("/products-by-brand/{brand}")
@@ -110,7 +136,7 @@ public class UserController {
 			@ApiResponse(code = 200, message= "Success"),
 			@ApiResponse(code = 401, message= "Message Not Found")
 	})
-	ResponseEntity<List<Product>> findBookByBrand(@PathVariable("brand")String brand) throws BrandNotFoundException {
+	ResponseEntity<List<Product>> findProductByBrand(@PathVariable("brand")String brand) throws BrandNotFoundException {
 		List<Product> productList =  userServices.ViewProductByBrand(brand);
 		return ResponseEntity.ok(productList);
 	}
@@ -182,6 +208,28 @@ public class UserController {
 	ResponseEntity<Integer> getTotalCartPrice() {
 		int total = cartService.cartTotal();
 		return ResponseEntity.ok(total);
+	}
+	
+	@DeleteMapping("/delete-all")
+	@ApiOperation(value = "Delete All Product From cart Operation", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message= "Success"),
+			@ApiResponse(code = 401, message= "Message Not Found")
+	})
+	public ResponseEntity<String> deleteAllCartProduct(){
+		cartService.deleteAll();
+		return ResponseEntity.accepted().body("Deleted");
+	}
+	
+	@PutMapping("/wallet-balance")
+	@ApiOperation(value = "Update Wallet Operation", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message= "Success"),
+			@ApiResponse(code = 401, message= "Message Not Found")
+	})
+	public ResponseEntity<String> updateWalletBalance(@RequestBody User user) throws IdNotFoundException {
+		userServices.updateWalletBalance(user);
+		return ResponseEntity.accepted().body("Updated");
 	}
 	
 }

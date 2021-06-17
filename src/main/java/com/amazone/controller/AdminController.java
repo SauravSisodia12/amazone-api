@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amazone.exception.IdNotFoundException;
 import com.amazone.exception.UserNotFoundException;
+import com.amazone.model.Admin;
 import com.amazone.model.Product;
 import com.amazone.services.AdminServices;
 import com.amazone.services.ProductServices;
@@ -48,6 +49,19 @@ public class AdminController {
 		System.out.println(username+"-"+password);
 		boolean checkDetails = adminService.validateAdmin(username, password);
 		return ResponseEntity.ok(checkDetails);
+	}
+	
+	@GetMapping("/admindetails/{adminid}")
+	@ApiOperation(value = "Get Admin By Id Operation", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message= "Success"),
+			@ApiResponse(code = 401, message= "Message Not Found")
+	})
+	ResponseEntity<Admin> findAdminById(@PathVariable("adminid")String adminid) throws UserNotFoundException {
+		System.out.println(adminid);
+		Admin admin = adminService.getAdminById(adminid);
+		System.out.println(admin);
+		return ResponseEntity.ok(admin);
 	}
 	
 	@PostMapping("/products")

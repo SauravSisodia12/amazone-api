@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.amazone.exception.IdNotFoundException;
 import com.amazone.model.Product;
-import com.amazone.repository.ProductDAO;
+import com.amazone.repository.ProductRepository;
 
 @Service
 public class ProductServicesImple implements ProductServices {
 	
 	@Autowired
-	ProductDAO productdao;
+	ProductRepository productdao;
 
 	@Override
 	public void addProduct(Product productDetails) {

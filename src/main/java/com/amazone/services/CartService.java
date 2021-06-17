@@ -11,4 +11,5 @@ public interface CartService {
 	void deleteProductFromCart(int ProductId) throws IdNotFoundException;
 	List<Cart> allCartItems();
 	int cartTotal();
+	void deleteAll();
 }

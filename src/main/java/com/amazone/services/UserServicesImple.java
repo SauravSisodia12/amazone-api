@@ -2,6 +2,7 @@ package com.amazone.services;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,17 +14,17 @@ import com.amazone.exception.UserAlreadyExistException;
 import com.amazone.exception.UserNotFoundException;
 import com.amazone.model.Product;
 import com.amazone.model.User;
-import com.amazone.repository.ProductDAO;
-import com.amazone.repository.UserDAO;
+import com.amazone.repository.ProductRepository;
+import com.amazone.repository.UserRepository;
 
 @Service
 public class UserServicesImple implements UserServices {
 
 	@Autowired
-	UserDAO userDAO;
+	UserRepository userDAO;
 	
 	@Autowired
-	ProductDAO productDao;
+	ProductRepository productDao;
 
 	@Override
 	public boolean validateUser(String userName, String password) throws UserNotFoundException{
@@ -51,9 +52,8 @@ public class UserServicesImple implements UserServices {
 	}
 
 	@Override
-	public int updateWalletBalance(String userid, int amount) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void updateWalletBalance(User user) {
+		userDAO.save(user);
 	}
 
 	@Override
@@ -79,10 +79,32 @@ public class UserServicesImple implements UserServices {
 	}
 
 	@Override
-	public List<Product> ViewProductByPrice(int choice) throws ProductNotFoundException {
-		List<Product> productList = productDao.findByPrice(choice);
-		if(productList.isEmpty())
+	public List<Product> ViewProductByPrice(String choice) throws ProductNotFoundException {
+		List<Product> productList = null;
+		if(choice.equalsIgnoreCase("lessThen10000"))
+		{
+			productList = productDao.findByPriceLessThen10000();
+		}
+		else if(choice.equalsIgnoreCase("10000to19999"))
+		{
+			productList = productDao.findByPrice10000to19999();
+		}
+		else if(choice.equalsIgnoreCase("20000to29999"))
+		{
+			productList = productDao.findByPrice20000to29999();
+		}
+		else if(choice.equalsIgnoreCase("30000to49999"))
+		{
+			productList = productDao.findByPrice30000to49999();
+		}
+		else if(choice.equalsIgnoreCase("50000AndMore"))
+		{
+			productList = productDao.findByPrice50000AndMore();
+		}
+		else {
 			throw new ProductNotFoundException("Products Not Available");
+		}
+		Collections.shuffle(productList);
 		return productList;
 	}
 
@@ -109,6 +131,20 @@ public class UserServicesImple implements UserServices {
 	public User getUserById(String userid) throws UserNotFoundException {
 		User user = userDAO.findUserByUserId(userid);
 		return user;
+	}
+
+	@Override
+	public List<Product> sortProducts(String choice) {
+		if(choice.equalsIgnoreCase("LowToHigh"))
+			return  productDao.findAll()
+					.stream()
+					.sorted((b1,b2)->b1.getPrice().compareTo(b2.getPrice()))
+					.collect(Collectors.toList());
+		else
+			return  productDao.findAll()
+					.stream()
+					.sorted((b1,b2)->b2.getPrice().compareTo(b1.getPrice()))
+					.collect(Collectors.toList());
 	}
 	
 }
