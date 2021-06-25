@@ -11,6 +11,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
 	List<Product> findByCategory(String category);
 	List<Product> findByBrand(String brand);
+	List<Product> findByCategoryAndBrand(String category, String brand);
 	
 	@Query("from Product p where lower(p.category) like :choice or lower(p.brand) like :choice or lower(p.name) like :choice")
 	List<Product> findByCategoryOrNameOrBrand(String choice);

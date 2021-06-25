@@ -146,6 +146,15 @@ public class UserServicesImple implements UserServices {
 					.sorted((b1,b2)->b2.getPrice().compareTo(b1.getPrice()))
 					.collect(Collectors.toList());
 	}
+
+	@Override
+	public List<Product> ViewProductByCategoryAndBrand(String category, String brand) throws ProductNotFoundException {
+		List<Product> productList = productDao.findByCategoryAndBrand(category, brand);
+		if(productList.isEmpty())
+			throw new ProductNotFoundException("Products Not Found");
+		Collections.shuffle(productList);
+		return productList;
+	}
 	
 }
 

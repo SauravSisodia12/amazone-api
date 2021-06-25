@@ -152,6 +152,17 @@ public class UserController {
 		return ResponseEntity.ok(productList);
 	}
 	
+	@GetMapping("/products-by-category-brand/{category}/{brand}")
+	@ApiOperation(value = "Get Products By Category And Brand Operation", response = String.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message= "Success"),
+			@ApiResponse(code = 401, message= "Message Not Found")
+	})
+	ResponseEntity<List<Product>> findProductByCategory(@PathVariable("category")String category, @PathVariable("brand")String brand) throws ProductNotFoundException {
+		List<Product> productList = userServices.ViewProductByCategoryAndBrand(category, brand);
+		return ResponseEntity.ok(productList);
+	}
+	
 	@GetMapping("/products-by-choice/{choice}")
 	@ApiOperation(value = "Get Products By Choice Operation", response = String.class)
 	@ApiResponses(value = {
@@ -159,6 +170,7 @@ public class UserController {
 			@ApiResponse(code = 401, message= "Message Not Found")
 	})
 	ResponseEntity<List<Product>> getByCategoryOrTitleOrAuth(@PathVariable("choice")String choice) throws CategoryNotFoundException {
+		System.out.println(choice);
 		List<Product> productList = userServices.ViewProductByNameOrBrandOrCategory(choice);
 		return ResponseEntity.ok(productList);
 	}

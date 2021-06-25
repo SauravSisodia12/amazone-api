@@ -25,5 +25,6 @@ public interface UserServices {
 	List<Product> viewProductByCategory(String category) throws CategoryNotFoundException;
 	List<Product> ViewProductByPrice(String choice) throws ProductNotFoundException;
 	List<Product> ViewProductByBrand(String brand) throws BrandNotFoundException;
+	List<Product> ViewProductByCategoryAndBrand(String category, String brand) throws ProductNotFoundException;
 	List<Product> ViewProductByNameOrBrandOrCategory(String choice) throws CategoryNotFoundException;
 }
